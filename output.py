@@ -11,10 +11,6 @@ from openpyxl import Workbook
 
 
 class Record(object):
-    # def __init__(self, key, en, zh):
-    #     self.key = key
-    #     self.en = en
-    #     self.zh = zh
     @property
     def key(self):
         return self._key
@@ -96,12 +92,6 @@ def readFileContent(enPath, zhPath):
                 r = Record()
                 r.key = arr[1].strip("'")
                 r.en = arr[2].strip("'")
-                # 当前文件的父路径
-                # r.path= os.path.abspath(os.path.dirname(enPath) + os.path.sep + ".")
-                # # 当前文件的前两级目录
-                # r.path = os.path.abspath(
-                #     os.path.dirname(enPath) + os.path.sep + "..")
-                # r.path= os.path.dirname(enPath)
                 r.path = enPath
                 records.append(r)
 
