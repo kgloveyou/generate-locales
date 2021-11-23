@@ -105,7 +105,7 @@ def readFileContent(enPath, zhPath):
 
 
 def exportXlsx(fileName='adhub.xlsx'):
-    data = [['key', 'zh', 'en', 'path']]
+    data = [['key', 'zh-CN', 'en-US', 'path']]
 
     for r in records:
         data.append([r.key, r.en, r.zh, r.path])
