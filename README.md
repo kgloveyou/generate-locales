@@ -9,13 +9,22 @@ antd pro框架中locales文件夹内容导出xlxs文件，用于核对文案内�
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  安装python3.7
+
+2.  安装对应的第三方库
+
+```
+pip install -r requirements.txt
+```
 
 #### 使用说明
 
-1.  xxxx
+1.  运行如下脚本，导出xlxs文件。
+
+```
+python ./output.py D:/work_repos/ad-hub-frontend/src adhub.xlsx
+```
+
 2.  xxxx
 3.  xxxx
 

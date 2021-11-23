@@ -104,7 +104,7 @@ def readFileContent(enPath, zhPath):
                     rs[0].zh = arr[2].strip("'")
 
 
-def exportXlsx():
+def exportXlsx(fileName='adhub.xlsx'):
     data = [['key', 'zh', 'en', 'path']]
 
     for r in records:
@@ -114,15 +114,27 @@ def exportXlsx():
     ws = wb.active
     for r in data:
         ws.append(r)
-    wb.save('adhub.xlsx')
+    wb.save(fileName)
 
 
-if __name__ == '__main__':
-    get_locales(r'D:\work_repos\ad-hub-frontend\src')
+def excetue():
+    if len(sys.argv) != 3:
+        print('参数个数不对')
+        return
+
+    srcPath = str(sys.argv[1])
+    xlxsFile = str(sys.argv[2])
+
+    get_locales(srcPath)
 
     for i in localesPaths:
         tranverse_file(i)
 
     readContent()
 
-    exportXlsx()
+    exportXlsx(xlxsFile)
+
+    print('---finished---')
+
+if __name__ == '__main__':
+    excetue()
