@@ -22,7 +22,7 @@ pip install -r requirements.txt
 1.  运行如下脚本，导出xlxs文件。
 
 ```
-python ./output.py D:/work_repos/ad-hub-frontend/src adhub.xlsx
+python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 ```
 
 2.  xxxx
