@@ -108,7 +108,7 @@ def exportXlsx(fileName='adhub.xlsx'):
     data = [['key', 'zh-CN', 'en-US', 'path']]
 
     for r in records:
-        data.append([r.key, r.en, r.zh, r.path])
+        data.append([r.key, r.zh, r.en, r.path])
 
     wb = Workbook()
     ws = wb.active
