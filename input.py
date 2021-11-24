@@ -2,7 +2,16 @@ import os
 
 from openpyxl import load_workbook
 
-records = []
+
+recordsDict = {}
+
+
+class Record(object):
+    # 初始化中给对象属性赋值
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+
 
 # 读取xlxs内容
 
@@ -11,36 +20,37 @@ def loadXlsx():
     wb = load_workbook(filename='adhub.xlsx')
     ws = wb['Sheet']
 
-    print(ws.max_row, ws.max_column)
+    for i in range(2, ws.max_row + 1):
+        # path
+        curPath = ws.cell(row=i, column=4).value
+        key = ws.cell(row=i, column=1).value
+        cn = ws.cell(row=i, column=2).value
+        en = ws.cell(row=i, column=3).value
 
-    records = [[0 for i in range(ws.max_column)] for j in range(ws.max_row)]
+        if not curPath in recordsDict:
+            recordsDict[curPath] = []
 
-    # print(records)
-    index = 0
+        recordsDict[curPath].append(Record(key, en))
 
-    for row in ws.rows:
-        # print(row[0].value, row[1].value, row[2].value, row[3].value)
-        records[index][0] = row[0].value
-        records[index][1] = row[1].value
-        records[index][2] = row[2].value
-        records[index][3] = row[3].value
-        index = index + 1
+        curZhPath = curPath.replace('en-US', 'zh-CN')
+        if not curZhPath in recordsDict:
+            recordsDict[curZhPath] = []
 
-    # for index in range(ws.max_row):
-    #   records[index][0] = ws.rows[index][0].value
-    #   records[index][1] = ws.rows[index][1].value
-    #   records[index][2] = ws.rows[index][2].value
-    #   records[index][3] = ws.rows[index][3].value
+        recordsDict[curZhPath].append(Record(key, cn))
 
     wb.close()
 
-    createFie(
-        r'c:\work_repos\ad-hub-frontend\src\locales\en-US\exception.js', records[0: 10])
+
+def updateLocaleFiles():
+    for (key, value) in recordsDict.items():
+        createFile(key, value)
+
+    print('--finished--')
 
 # 创建ts/js文件，并写入locales内容
 
 
-def createFie(fileName, fileRecords):
+def createFile(fileName, fileRecords):
 
     if not os.path.exists(os.path.dirname(fileName)):
         os.makedirs(os.path.dirname(fileName))
@@ -54,14 +64,13 @@ def createFie(fileName, fileRecords):
     file.write('export default {\n')  # 写入文件
 
     for r in fileRecords:
-        file.write("  '{key}': '{value}',\n".format(key=r[0], value=r[1]))  # 写入文件
+        file.write("  '{key}': '{value}',\n".format(
+            key=r.key, value=r.value))  # 写入文件
 
     file.write('}')  # 写入文件
-    # file.seek(0)  # 光标移动到文件开头
-    # file_content = file.read()  # 读取整个文件内容
-    # print(file_content)
     file.close()  # 关闭文件
 
 
 if __name__ == '__main__':
     loadXlsx()
+    updateLocaleFiles()

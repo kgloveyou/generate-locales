@@ -1,7 +1,7 @@
 # generateLocales
 
 #### 介绍
-antd pro框架中locales文件夹内容导出xlxs文件，用于核对文案内容。
+antd pro框架中locales文件夹内容导出xlxs文件，用于核对文案内容；同时，可以利用修改后的xlxs文件，自动生成对应的js/ts文件到项目代码中。
 
 #### 依赖
 - python 3.8
@@ -26,8 +26,11 @@ pip install -r requirements.txt
 python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 ```
 
-2.  xxxx
-3.  xxxx
+2.  运行如下脚本，根据目录中的xlxs文件生成antd pro locales文件。（**注意：自动生成的文件可能与源文件不同，不包含注释行**）
+
+```
+python ./input.py
+```
 
 #### 参与贡献
 
