@@ -108,42 +108,67 @@ def tranverse_file(path_data):
 
 
 def readContent():
-    for index in range(0, len(enUSPaths)):
-        readFileContent(enUSPaths[index], zhCNPaths[index])
+    enCount = len(enUSPaths)
+    zhCount = len(zhCNPaths)
+
+    # 英文文件多
+    if enCount > zhCount or enCount == zhCount:
+        for i in range(0, enCount):
+            expectZhPath = enUSPaths[i].replace('en-US', 'zh-CN')
+            # 存在同名文件
+            if expectZhPath in zhCNPaths:
+                index = zhCNPaths.index(expectZhPath)
+                readFileContent(enUSPaths[i], zhCNPaths[index])
+            else:
+                readFileContent(enUSPaths[i], None)
+
+    else:
+        # 中文文件多
+        for j in range(0, zhCount):
+            expectEnPath = zhCNPaths[j].replace('zh-CN', 'en-US')
+            # 存在同名文件
+            if expectEnPath in enUSPaths:
+                index = enUSPaths.index(expectEnPath)
+                readFileContent(enUSPaths[index], zhCNPaths[j])
+            else:
+                readFileContent(None, zhCNPaths[j])
 
 
 def readFileContent(enPath, zhPath):
-    with open(enPath, mode='r', encoding='UTF-8') as files:
-        for line in files:
-            if not line.strip().startswith(r'//'):
-                if linePattern.search(line):
-                    arr = linePattern.split(line.strip())
-                    r = Record()
-                    r.key = arr[1].strip("'")
-                    r.en = arr[2].strip("'")
-                    r.path = enPath
-                    records.append(r)
-                elif linePattern2.search(line):
-                    arr = linePattern2.split(line.strip())
-                    r = Record()
-                    r.key = arr[1].strip("'")
-                    r.en = arr[2].strip("'")
-                    r.path = enPath
-                    records.append(r)
-
-    with open(zhPath, mode='r', encoding='UTF-8') as files:
-        for line in files:
-            if not line.strip().startswith(r'//'):
-                if linePattern.search(line):
-                    arr = linePattern.split(line.strip())
-                    rs = [i for i in records if i.key == arr[1].strip("'")]
-                    if len(rs) == 1:
-                        rs[0].zh = arr[2].strip("'")
-                elif linePattern2.search(line):
-                    arr = linePattern2.split(line.strip())
-                    rs = [i for i in records if i.key == arr[1].strip("'")]
-                    if len(rs) == 1:
-                        rs[0].zh = arr[2].strip("'")
+    if enPath:
+        with open(enPath, mode='r', encoding='UTF-8') as files:
+            for line in files:
+                stripLine = line.strip()
+                if not stripLine.startswith(r'//'):
+                    if linePattern.search(stripLine):
+                        arr = linePattern.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip("'")
+                        r.en = arr[2].strip("'")
+                        r.path = enPath
+                        records.append(r)
+                    elif linePattern2.search(stripLine):
+                        arr = linePattern2.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip('"')
+                        r.en = arr[2].strip('"')
+                        r.path = enPath
+                        records.append(r)
+    if zhPath:
+        with open(zhPath, mode='r', encoding='UTF-8') as files:
+            for line in files:
+                stripLine = line.strip()
+                if not stripLine.startswith(r'//'):
+                    if linePattern.search(stripLine):
+                        arr = linePattern.split(stripLine)
+                        rs = [i for i in records if i.key == arr[1].strip("'")]
+                        if len(rs) == 1:
+                            rs[0].zh = arr[2].strip("'")
+                    elif linePattern2.search(stripLine):
+                        arr = linePattern2.split(stripLine)
+                        rs = [i for i in records if i.key == arr[1].strip('"')]
+                        if len(rs) == 1:
+                            rs[0].zh = arr[2].strip('"')
 
 
 def exportXlsx(fileName='adhub.xlsx'):
