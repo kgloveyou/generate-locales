@@ -26,10 +26,10 @@ pip install -r requirements.txt
 python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 ```
 
-2.  运行如下脚本，根据目录中的xlxs文件生成antd pro locales文件。（**注意：自动生成的文件可能与源文件不同，不包含注释行**）
+2.  运行如下脚本，根据目录中的xlsx文件生成antd pro locales文件。（**注意：自动生成的文件可能与源文件不同，不包含注释行**）
 
 ```
-python ./input.py
+python ./input.py ./adhub.xlsx
 ```
 
 #### 参与贡献

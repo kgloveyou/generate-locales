@@ -1,4 +1,5 @@
 import os
+import sys
 
 from openpyxl import load_workbook
 
@@ -16,8 +17,8 @@ class Record(object):
 # 读取xlxs内容
 
 
-def loadXlsx():
-    wb = load_workbook(filename='adhub.xlsx')
+def loadXlsx(filename='adhub.xlsx'):
+    wb = load_workbook(filename)
     ws = wb['Sheet']
 
     for i in range(2, ws.max_row + 1):
@@ -45,11 +46,7 @@ def updateLocaleFiles():
     for (key, value) in recordsDict.items():
         createFile(key, value)
 
-    print('--finished--')
-
 # 创建ts/js文件，并写入locales内容
-
-
 def createFile(fileName, fileRecords):
 
     if not os.path.exists(os.path.dirname(fileName)):
@@ -70,7 +67,17 @@ def createFile(fileName, fileRecords):
     file.write('}')  # 写入文件
     file.close()  # 关闭文件
 
+def excetue():
+    if len(sys.argv) != 2:
+        print('参数个数不对')
+        return
+    
+    xlxsFile = str(sys.argv[1])
+
+    loadXlsx(xlxsFile)
+    updateLocaleFiles()
+    
+    print('--finished--')
 
 if __name__ == '__main__':
-    loadXlsx()
-    updateLocaleFiles()
+    excetue()
