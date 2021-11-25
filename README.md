@@ -32,6 +32,11 @@ python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 python ./input.py ./adhub.xlsx
 ```
 
+**说明：**
+
+- 使用前尽可能确保en-US、zh-CN文件夹的目录结构相同，文件中的数据能对应上。（如果一种语言文件中记录缺失，则会根据另一种语言文件内容进行自动补充，Value将与Key保持一致）
+- locales文件中，key和value使用的引号必须相同，即同时为单引号或双引号；不匹配的记录，导出excel时，将会丢弃。
+
 #### 参与贡献
 
 1.  Fork 本仓库

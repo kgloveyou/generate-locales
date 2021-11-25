@@ -107,6 +107,27 @@ def tranverse_file(path_data):
             get_files(os.path.join(zh_dir, k), 'zh-CN')
 
 
+def readContent2():
+    # 中文文件对应的英文文件
+    expectEnPaths = [i.replace('zh-CN', 'en-US') for i in zhCNPaths]
+
+    unionEnPath = set(enUSPaths) | set(expectEnPaths)
+
+    for e in unionEnPath:
+        if e in enUSPaths:
+            enPath = e
+        else:
+            enPath = None
+
+        searchCnPath = e.replace('en-US', 'zh-CN')
+
+        if searchCnPath in zhCNPaths:
+            cnPath = searchCnPath
+        else:
+            cnPath = None
+        
+        readFileContent(enPath, cnPath)
+
 def readContent():
     enCount = len(enUSPaths)
     zhCount = len(zhCNPaths)
@@ -135,7 +156,8 @@ def readContent():
 
 
 def readFileContent(enPath, zhPath):
-    if enPath:
+    # 中英文文件都存在
+    if enPath and zhPath:
         with open(enPath, mode='r', encoding='UTF-8') as files:
             for line in files:
                 stripLine = line.strip()
@@ -154,22 +176,76 @@ def readFileContent(enPath, zhPath):
                         r.en = arr[2].strip('"')
                         r.path = enPath
                         records.append(r)
-    if zhPath:
+
         with open(zhPath, mode='r', encoding='UTF-8') as files:
             for line in files:
                 stripLine = line.strip()
                 if not stripLine.startswith(r'//'):
                     if linePattern.search(stripLine):
                         arr = linePattern.split(stripLine)
-                        rs = [i for i in records if i.key == arr[1].strip("'")]
+                        rs = [i for i in records if i.path == zhPath.replace('zh-CN', 'en-US') and i.key == arr[1].strip("'")]
                         if len(rs) == 1:
                             rs[0].zh = arr[2].strip("'")
+                        # 中文存在，英文不存在
+                        elif len(rs) == 0:
+                            r = Record()
+                            r.key = arr[1].strip("'")
+                            r.zh = arr[2].strip("'")
+                            r.path = enPath
+                            records.append(r)
                     elif linePattern2.search(stripLine):
                         arr = linePattern2.split(stripLine)
-                        rs = [i for i in records if i.key == arr[1].strip('"')]
+                        rs = [i for i in records if i.path == zhPath.replace('zh-CN', 'en-US') and i.key == arr[1].strip('"')]
                         if len(rs) == 1:
                             rs[0].zh = arr[2].strip('"')
+                        # 中文存在，英文不存在
+                        elif len(rs) == 0:
+                            r = Record()
+                            r.key = arr[1].strip('"')
+                            r.zh = arr[2].strip('"')
+                            r.path = enPath
+                            records.append(r)            
 
+    # 只有英文文件                            
+    if enPath and not zhPath:
+        with open(enPath, mode='r', encoding='UTF-8') as files:
+            for line in files:
+                stripLine = line.strip()
+                if not stripLine.startswith(r'//'):
+                    if linePattern.search(stripLine):
+                        arr = linePattern.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip("'")
+                        r.en = arr[2].strip("'")
+                        r.path = enPath
+                        records.append(r)
+                    elif linePattern2.search(stripLine):
+                        arr = linePattern2.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip('"')
+                        r.en = arr[2].strip('"')
+                        r.path = enPath
+                        records.append(r)
+    # 只有中文文件
+    if not enPath and zhPath:
+        with open(zhPath, mode='r', encoding='UTF-8') as files:
+            for line in files:
+                stripLine = line.strip()
+                if not stripLine.startswith(r'//'):
+                    if linePattern.search(stripLine):
+                        arr = linePattern.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip("'")
+                        r.zh = arr[2].strip("'")
+                        r.path = zhPath
+                        records.append(r)
+                    elif linePattern2.search(stripLine):
+                        arr = linePattern2.split(stripLine)
+                        r = Record()
+                        r.key = arr[1].strip('"')
+                        r.zh = arr[2].strip('"')
+                        r.path = zhPath
+                        records.append(r)
 
 def exportXlsx(fileName='adhub.xlsx'):
     data = [['key', 'zh-CN', 'en-US', 'path']]
@@ -197,7 +273,8 @@ def excetue():
     for i in localesPaths:
         tranverse_file(i)
 
-    readContent()
+    # readContent()
+    readContent2()
 
     exportXlsx(xlxsFile)
 

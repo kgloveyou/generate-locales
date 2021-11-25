@@ -25,19 +25,26 @@ def loadXlsx(filename='adhub.xlsx'):
         # path
         curPath = ws.cell(row=i, column=4).value if ws.cell(row=i, column=4).value else ''
         key = ws.cell(row=i, column=1).value if ws.cell(row=i, column=1).value else ''
-        cn = ws.cell(row=i, column=2).value if ws.cell(row=i, column=2).value else ''
-        en = ws.cell(row=i, column=3).value if ws.cell(row=i, column=3).value else ''
+        cn = ws.cell(row=i, column=2).value if ws.cell(row=i, column=2).value else key
+        en = ws.cell(row=i, column=3).value if ws.cell(row=i, column=3).value else key
 
-        if not curPath in recordsDict:
-            recordsDict[curPath] = []
 
-        recordsDict[curPath].append(Record(key, en))
+        if 'en-US' in curPath:
+            if not curPath in recordsDict:
+                recordsDict[curPath] = []
 
-        curZhPath = curPath.replace('en-US', 'zh-CN')
-        if not curZhPath in recordsDict:
-            recordsDict[curZhPath] = []
+            recordsDict[curPath].append(Record(key, en))
 
-        recordsDict[curZhPath].append(Record(key, cn))
+            curZhPath = curPath.replace('en-US', 'zh-CN')
+            if not curZhPath in recordsDict:
+                recordsDict[curZhPath] = []
+
+            recordsDict[curZhPath].append(Record(key, cn))
+        elif 'zh-CN' in curPath:
+            if not curPath in recordsDict:
+                recordsDict[curPath] = []
+
+            recordsDict[curPath].append(Record(key, cn))
 
     wb.close()
 
@@ -61,9 +68,12 @@ def createFile(fileName, fileRecords):
     file.write('export default {\n')  # 写入文件
 
     for r in fileRecords:
-        file.write("  '{key}': '{value}',\n".format(
-            key=r.key, value=r.value))  # 写入文件
-
+        # 文本内容包含单引号，则用双引号括起来
+        if r"'" in r.key or r"'" in r.value:
+            file.write('  "{key}": "{value}",\n'.format(key=r.key, value=r.value))  # 写入文件
+        else:
+            file.write("  '{key}': '{value}',\n".format(key=r.key, value=r.value))  # 写入文件
+  
     file.write('}')  # 写入文件
     file.close()  # 关闭文件
 
