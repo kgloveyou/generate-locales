@@ -9,7 +9,6 @@ import re
 from openpyxl import Workbook
 # from openpyxl.utils import get_column_letter
 
-
 class Record(object):
     def __init__(self, key='', en='', zh='', path=''):
         self._key = key
@@ -259,7 +258,7 @@ def readFileContent(enPath, zhPath):
                         r.path = zhPath
                         records.append(r)
 
-def exportXlsx(fileName='adhub.xlsx'):
+def exportXlsx(fileName: str='adhub.xlsx'):
     data = [['key', 'zh-CN', 'en-US', 'path']]
 
     for r in records:
@@ -269,7 +268,9 @@ def exportXlsx(fileName='adhub.xlsx'):
     ws = wb.active
     for r in data:
         ws.append(r)
-    wb.save(fileName)
+    
+    xlsxName = fileName.replace('.xlsx', datetime.datetime.now().strftime('-%Y%m%d%H%M%S.xlsx'))
+    wb.save(xlsxName)
 
 
 def excetue():
