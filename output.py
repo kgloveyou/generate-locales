@@ -75,6 +75,7 @@ def get_locales(path):
 
 
 def get_files(path, lang):
+    # print(path)
     if os.path.isfile(path):
         if lang == 'en-US':
             enUSPaths.append(os.path.join(path))
@@ -97,15 +98,26 @@ def get_files(path, lang):
 
 def tranverse_file(path_data):
     en_dir = path_data + "\\en-US"
+    # print(en_dir)
     if os.path.isdir(en_dir) is True:
         for j in os.listdir(en_dir):
+            # print(os.path.join(en_dir, j))
             get_files(os.path.join(en_dir, j), 'en-US')
+    elif os.path.isfile(en_dir +'.ts') is True:
+        get_files(os.path.join(en_dir +'.ts'), 'en-US')
+    elif os.path.isfile(en_dir +'.js') is True:
+        get_files(os.path.join(en_dir +'.js'), 'en-US')
 
     zh_dir = path_data + "\\zh-CN"
+    # print(zh_dir)
     if os.path.isdir(zh_dir) is True:
         for k in os.listdir(zh_dir):
+            # print(os.path.join(zh_dir, k))
             get_files(os.path.join(zh_dir, k), 'zh-CN')
-
+    elif os.path.isfile(zh_dir +'.ts') is True:
+        get_files(os.path.join(zh_dir + '.ts'), 'zh-CN')
+    elif os.path.isfile(zh_dir +'.js') is True:
+        get_files(os.path.join(zh_dir + '.js'), 'zh-CN')
 
 def readContent2():
     # 中文文件对应的英文文件
@@ -270,8 +282,16 @@ def excetue():
 
     get_locales(srcPath)
 
+    # for i in localesPaths:
+    #     print(i)
+
     for i in localesPaths:
         tranverse_file(i)
+
+    # for i in enUSPaths:
+    #     print(i)
+    # for i in zhCNPaths:
+    #     print(i)
 
     # readContent()
     readContent2()
