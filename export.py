@@ -8,6 +8,7 @@ python ./export.py D:\\work_repos\\ad-magic-frontend\\annot-core\\src admagic-co
 
 """
 import sys
+import datetime
 import os
 import re
 from openpyxl import Workbook
@@ -250,7 +251,7 @@ def readFileContent(enPath, zhPath):
                         r.path = zhPath
                         records.append(r)
 
-def exportXlsx(fileName='adhub.xlsx'):
+def exportXlsx(fileName='admagic.xlsx'):
     data = [['key', 'zh-CN', 'en-US', 'path']]
 
     for r in records:
@@ -260,7 +261,9 @@ def exportXlsx(fileName='adhub.xlsx'):
     ws = wb.active
     for r in data:
         ws.append(r)
-    wb.save(fileName)
+    
+    xlsxName = fileName.replace('.xlsx', datetime.datetime.now().strftime('-%Y%m%d%H%M%S.xlsx'))
+    wb.save(xlsxName)
 
 
 def excetue():
