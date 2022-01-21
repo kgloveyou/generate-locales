@@ -1,7 +1,9 @@
 # generateLocales
 
 #### 介绍
-antd pro框架中locales文件夹内容导出xlxs文件，用于核对文案内容；同时，可以利用修改后的xlxs文件，自动生成对应的js/ts文件到项目代码中。
+- antd pro框架中locales文件夹内容导出xlxs文件，用于核对文案内容；
+- 利用修改后的xlxs文件，自动生成对应的js/ts文件到项目代码中；
+- 比较新旧xlxs文档，并在新文件中标记出变更（新增/修改）过的行；
 
 #### 依赖
 - python 3.8
@@ -32,7 +34,7 @@ python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 python ./input.py ./adhub.xlsx
 ```
 
-​	3.运行如下脚本，对比两份xlsx文件的差异。
+​	3.运行如下脚本，对比两份xlsx文件的差异。（第2个参数是旧文件路径，第3个参数是新文件路径）
 
 ```sh
 python ./compare.py ./adhub-202201061032.xlsx ./adhub-20220121151836.xlsx
