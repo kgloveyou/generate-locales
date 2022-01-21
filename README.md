@@ -32,6 +32,12 @@ python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 python ./input.py ./adhub.xlsx
 ```
 
+​	3.运行如下脚本，对比两份xlsx文件的差异。
+
+```sh
+python ./compare.py ./adhub-202201061032.xlsx ./adhub-20220121151836.xlsx
+```
+
 **说明：**
 
 - 使用前尽可能确保en-US、zh-CN文件夹的目录结构相同，文件中的数据能对应上。（如果一种语言文件中记录缺失，则会根据另一种语言文件内容进行自动补充，Value将与Key保持一致）
