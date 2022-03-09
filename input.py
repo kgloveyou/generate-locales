@@ -24,9 +24,9 @@ def loadXlsx(filename='adhub.xlsx'):
     for i in range(2, ws.max_row + 1):
         # path
         curPath = ws.cell(row=i, column=4).value if ws.cell(row=i, column=4).value else ''
-        key = ws.cell(row=i, column=1).value if ws.cell(row=i, column=1).value else ''
-        cn = ws.cell(row=i, column=2).value if ws.cell(row=i, column=2).value else key
-        en = ws.cell(row=i, column=3).value if ws.cell(row=i, column=3).value else key
+        key = str(ws.cell(row=i, column=1).value) if ws.cell(row=i, column=1).value else ''
+        cn = str(ws.cell(row=i, column=2).value) if ws.cell(row=i, column=2).value else key
+        en = str(ws.cell(row=i, column=3).value) if ws.cell(row=i, column=3).value else key
 
 
         if 'en-US' in curPath:
