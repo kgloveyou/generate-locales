@@ -27,6 +27,15 @@ pip install -r requirements.txt
 ```
 python ./output.py D:\\work_repos\\ad-hub-frontend\\src adhub.xlsx
 ```
+**注意：**
+
+admagic导出xlxs文件，请用专属脚本：
+
+```bash
+# admagic 导出专用
+python ./export.py D:\\work_repos\\ad-magic-frontend\\annot-ui\\src admagic-ui.xlsx
+python ./export.py D:\\work_repos\\ad-magic-frontend\\annot-core\\src admagic-core.xlsx
+```
 
 2.  运行如下脚本，根据目录中的xlsx文件生成antd pro locales文件。（**注意：自动生成的文件可能与源文件不同，不包含空行、注释行**）
 
